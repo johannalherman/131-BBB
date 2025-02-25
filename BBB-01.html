@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chem 131 BBB-1 Simulation</title>
+  <style>
+    body {
+      max-width: 1000px;
+      margin: auto;
+      font: 18px Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+        
+    #instruction-message {
+      margin: auto;
+      text-align: left;
+    }
+    
+    hr {
+      border: 5px solid #FF2E37;
+      border-radius: 5px;
+    }
+
+    .reset-button-container button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .button-container button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .row {
+      display: flex;
+    }
+
+    .column {
+      flex: 50%;
+      padding: 0px 20px;
+    }
+    
+    #glassware-container, #glassware-container-2, #glassware-container-3 {
+      position: relative;
+      display: inline-block;
+    }
+    
+    #total-mass, #total-mass-2 {
+      position: absolute;
+      bottom: 2.5%; /* Adjust as needed */
+      left: 50%; /* Adjust as needed */
+      transform: translateX(-50%);
+      border-radius: 5px;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 0;
+    }
+    #total-mass-3 {
+      position: absolute;
+      bottom: 118px; /* Adjust as needed */
+      left: 50%; /* Adjust as needed */
+      transform: translateX(-50%);
+      border-radius: 5px;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 0;
+    }
+    
+    #saltMass, #amount {
+      position: absolute;
+      bottom: -16px; /* Adjust as needed */
+      left: 50%; /* Adjust as needed */
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      color: red;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 100;
+    }
+    
+    #flask_balance, #cylinder, #flask {
+      display: absolute;
+      width: 400px;
+      z-index: 0;
+    }
+    
+    #balance {
+      position: relative;
+      bottom: 107px;
+      width: 400px;
+      z-index: 0;
+    }
+
+    #liquid {
+      position: absolute;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 0;
+      background: #abdcf2;
+      transition: height 0.3s;
+      opacity: 0.75;
+      border-radius: 5px;
+      z-index: -10;
+    }
+
+    #solution {
+      position: absolute;
+      bottom: 23.9%;
+      left: 50%; transform: translateX(-50%);
+      width: 13%;
+      height: 0;
+      background: #abdcf2;
+      transition: height 0.3s ease-in-out;
+      opacity: 0.75;
+      z-index: -10;
+    }
+    .solution::after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      right: 50%; transform: translateX(50%);
+      width: 100%;
+      height: 5px;
+      background: #def1fa; /* Subtle meniscus highlight */
+      border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
+      z-index: 0;
+    }
+
+    #mixture {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 0;
+      background: #abdcf2;
+      transition: height 0.3s;
+      opacity: 0.75;
+      border-radius: 5px;
+      z-index: -10;
+    }
+
+    .tilt {
+      animation: tiltAnimation 0.5s 4 alternate ease-in-out;
+    }        
+    @keyframes tiltAnimation {
+            0% { transform: rotate(-5deg) translateY(-20px); }
+            50% { transform: rotate(5deg) translateY(-20px); }
+            100% { transform: rotate(-5deg) translateY(-20px); }
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div class="reset-button-container" style="text-align: left;">
+      <button onclick="reset()">Reset All Controls</button>
+  </div>
+  
+<div class="row" style="margin-bottom: 40px">
+  <div class="column">
+    <!--Balance Area #1 Code-->
+
+      <div id="glassware-container">
+        <div id="liquid"></div>
+        <img id="flask_balance" src="https://github.com/johannalherman/131-BBB/blob/main/Flask%20on%20Balance.png?raw=true">
+        <p id="total-mass"><span>0.000</span> g</p>
+      </div>
+
+    <div class="button-container" style="margin-bottom: 40px;">
+      <button onclick="addAcid()">Add Solid Food Acid</button>
+    </div>
+  </div>
+  
+  <div class="column">
+    <!--Balance Area #2 Code-->
+
+      <div id="glassware-container-2">
+        <div id="solution" class="solution"></div>
+        <img id="cylinder" src="https://github.com/johannalherman/Chem131/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true">
+        <p id="total-mass-2"><span>0.000</span> g</p> 
+        <p id="amount">Solution Volume: <span>0.0000</span> mL</p>
+      </div>
+
+    <div class="button-container">
+      <button onclick="addSolution()">Add Sodium Bicarbonate</button>
+      <button onclick="removeSolution()">Remove Sodium Bicarbonate</button>
+    </div>
+  </div>
+</div>
+
+  <!--Balance Area #1 Code-->
+
+    <div id="glassware-container-3" style="width: 600px">
+      <div id="mixture"></div>
+      <img id="flask" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true">
+      <img id="balance" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true">
+      <p id="total-mass-3"><span>0.000</span> g</p>
+    </div>
+
+  <div class="button-container" style="margin-bottom: 40px;">
+    <button onclick="mix()">Combine Food Acid and Sodium Bicarbonate</button>
+    <button onclick="stirFlask()">Stir Flask</button>
+  </div>
+
+<hr>
+<p style="color: #ff2e37; text-align: left;"><em>This simulation was designed for use on a laptop or desktop computer. This simulation may not function properly on a mobile device.</em></p>
+ 
+  <script>
+    let amount = 0;
+    let totalMass1 = 0;
+    let saltVol = 0;
+    let liquidHeight1 = 0;
+    let px_scalor_1 = 14;
+    let lim1 = 125; //glassware volume limit (in mL); maybe ~225 in px
+    let totalMass2 = 0;
+    let solVolume = 0;
+    let liquidHeight2= 0;
+    let cylinderVolume = 380;  // Total px hieght volume of the cylinder
+    let px_scalor_2 = 36.35; // number of px in mL in cylinder image
+    let increment = 0; // Adjust this value for how much water should be added to cylinder per click
+
+    const addAcidButton = document.querySelector('button[onclick="addAcid()"]');
+    const stirFlaskButton = document.querySelector('button[onclick="stirFlask()"]');
+    const addSolutionButton = document.querySelector('button[onclick="addSolution()"]');
+    const removeSolutionButton = document.querySelector('button[onclick="removeSolution()"]');
+    const mixButton = document.querySelector('button[onclick="mix()"]');
+
+
+    function getRandomAmount(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function reset() {
+      totalMass1 = 0;
+      saltVol = 0
+      liquidHeight1 = 0;
+      totalMass2 = 0;
+      solVolume = 0;
+      updateMassDisplay1();
+      updateMassDisplay2();
+      document.getElementById('liquid').style.height = 0 + 'px';
+      document.getElementById('solution').style.height = 0 + 'px';
+      enableButtons1(); // Enable buttons when resetting
+    }
+
+    function addAcid() {
+      amount = 1;
+      if (totalMass1 >= lim1) {
+      	amount = 0;
+      }
+      saltVol += amount*5; // amounts = generic grams
+      totalMass1 += amount;
+      updateMassDisplay1();
+      increaseLiquidLevel1(saltVol);
+    }
+
+    function increaseLiquidLevel1(volume_mL) {
+    	// functoin is designed to increase the hieght of the liquid level based on the geometry of a trapezoid, due to flask shape
+    	// lim1 = max glassware volume (in mL)
+      // volume_mL = current volume glassware should be filled to (in mL)
+      liquidHeight1 = ((volume_mL/lim1)*(5.797*px_scalor_1)) * (2/((-0.6*volume_mL)+100)*((3*px_scalor_1)^2))+20
+      document.getElementById('liquid').style.height = liquidHeight1 + 'px';
+    }
+    function updateMassDisplay1() {
+      document.querySelector('#total-mass span').textContent = totalMass1.toFixed(3);
+    }
+    
+    
+
+    function addSolution() {
+      amount = 1;
+      solVolume = Math.min(cylinderVolume/px_scalor_2, solVolume + amount);
+      totalMass2 = solVolume; // 
+      updateMassDisplay2();
+      increaseLiquidLevel2();  
+    }
+
+    function removeSolution() {
+      amount = 1;
+      if (amount >= solVolume) {  
+        amount = solVolume;
+      }
+      solVolume = Math.max(0, solVolume - amount);
+      totalMass2 = solVolume;
+      updateMassDisplay2();
+      increaseLiquidLevel2();
+    }
+
+    function increaseLiquidLevel2() {
+      if (solVolume > 0) {
+        document.getElementById('solution').style.height = ((solVolume * px_scalor_2)+4) + 'px';
+      } else {
+        document.getElementById('solution').style.height = (solVolume * px_scalor_2) + 'px';
+      }
+    }
+    function updateMassDisplay2(solVoume) {
+      document.querySelector('#total-mass-2 span').textContent = totalMass2.toFixed(3);  
+      document.querySelector('#amount span').textContent = solVolume.toFixed(4);
+    }
+
+
+
+    function mix() {
+      mixVolume = solVolume + saltVol + 15;
+      totalMass2 = mixVolume; // 
+      updateMassDisplay3();
+      increaseLiquidLevel3();  
+    }
+    
+    function stirFlask () {
+      const img1 = document.getElementById("flask");
+      img1.classList.remove("tilt");
+      void img1.offsetWidth; // Trigger reflow to restart animation
+      img1.classList.add("tilt");
+    }
+
+    function increaseLiquidLevel3() {
+      document.getElementById('mixture').style.height = mixVolume + 'px';
+    }
+    function updateMassDisplay3(solVoume) {
+      document.querySelector('#total-mass-3 span').textContent = totalMass2.toFixed(3);
+    }
+    
+    
+
+    function disableButtons1() {
+      addAcidButton.disabled = true;
+    }
+
+    function enableButtons1() {
+      addAcidButton.disabled = false;
+    }
+
+    function disableButtons2() {
+      addSolutionButton.disabled = true;
+    }
+
+    function enableButtons2() {
+      addSolutionButton.disabled = false;
+    }
+
+  </script>
+</body>
+</html>
