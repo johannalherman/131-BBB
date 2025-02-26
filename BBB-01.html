@@ -245,8 +245,8 @@
           <button id="addLargeParticlesBtn">Add Large Amount</button>
         </div>
         <div class="button-container">
-          <button id="tareButton" class="control-button">Tare</button>
-          <button id="clearButton" class="control-button">Clear Balance</button>
+          <button id="tareButton-1" class="control-button">Tare</button>
+          <button id="clearButton" class="control-button">Empty Flask</button>
         </div>
       </div>
 
@@ -260,8 +260,11 @@
 
         <div class="button-container">
           <button id="dropsButton">Add Drops</button>
-          <button id="pourButton">Pour</button>
-          <button id="removeSolution" class="control-button">Remove Sodium Bicarbonate</button>
+          <button id="pourButton">Pour In</button>
+        </div>        
+        <div class="button-container">
+          <button id="tareButton-2" class="control-button">Tare</button>
+          <button id="removeSolution" class="control-button">Pour Out</button>
         </div>
       </div>
     </div>
@@ -283,35 +286,44 @@
       let amount = 0
       
     	let acidMass = 0
-      let totalMass_1 = 0
-      let tareOffset = 0
+      let flask1Mass = getRandomAmount(35, 40)
+      let totalMass_1 = flask1Mass
+      let tareOffset1 = 0
       
-      let totalMass2 = 0
+      let cylinderMass = getRandomAmount(25, 30)
+      let totalMass2 = cylinderMass
+      let tareOffset2 = 0
       let solVolume = 0
       let liquidHeight2 = 0
       let cylinderVolume = 380 // Total px hieght volume of the cylinder
       let px_scalor_2 = 36.35 // number of px in mL in cylinder image
       let increment = 0 // Adjust this value for how much water should be added to cylinder per click
       
-
+      let mixVolume = 0
+      let totalMass3 = 0
+      
+			updateMassDisplay_1() // run at start
+      updateMassDisplay2()
+      
       function reset() {
       	amount = 0
         
         acidMass = 0
-        tareOffset = 0
-        totalMass_1 = 0
+        tareOffset1 = 0
+        totalMass_1 = flask1Mass
         pileHeight = 0
         pileWidth = 0
         updateMassDisplay_1()
       
         totalMass2 = 0
+        tareOffset2 = 0
         solVolume = 0
         liquidHeight2 = 0
+        updateMassDisplay2()
         
         mixVolume = 0
         totalMass3 = 0
         
-        updateMassDisplay2()
         updateMassDisplay3()
         
         document.getElementById("solution").style.height = 0 + "px"
@@ -385,17 +397,17 @@
         setTimeout(() => { updateMassDisplay_1()}, 500); }
       
       function updateMassDisplay_1() {
-      	document.getElementById("total-mass-1").textContent = `${(totalMass_1 - tareOffset).toFixed(3)} g`;
+      	document.getElementById("total-mass-1").textContent = `${(totalMass_1 - tareOffset1).toFixed(3)} g`;
       }    
       
-      document.getElementById("tareButton").addEventListener("click", () => {
-        tareOffset = totalMass_1;
+      document.getElementById("tareButton-1").addEventListener("click", () => {
+        tareOffset1 = totalMass_1;
         updateMassDisplay_1();
       });   
       
       document.getElementById("clearButton").addEventListener("click", () => {
-        tareOffset = 0;
-        totalMass_1 = 0;
+        tareOffset1 = 0;
+        totalMass_1 = flask1Mass;
         pileHeight = 0;
         pileWidth = 0;
         updateMassDisplay_1();
@@ -464,6 +476,12 @@
       const mixButton = document.querySelector('button[onclick="mix()"]')
       const stirFlaskButton = document.querySelector('button[onclick="stirFlask()"]')
 
+             
+      document.getElementById("tareButton-2").addEventListener("click", () => {
+        tareOffset2 = totalMass2
+        updateMassDisplay2()
+      });  
+      
       function addSolution(size) {
         if (size === 'drops') {
         	amount = getRandomAmount(0.1, 0.3)
@@ -471,18 +489,18 @@
         	amount = getRandomAmount(3, 4.5)
         }
         solVolume = Math.min(cylinderVolume / px_scalor_2, solVolume + amount)
-        totalMass2 = solVolume //
+        totalMass2 = solVolume + cylinderMass //should add formula for soln density!!
         updateMassDisplay2()
         increaseLiquidLevel2()
       }
 
       function removeSolution() {
-        amount = getRandomAmount(2, 3.5)
+        amount = getRandomAmount(2, 3)
         if (amount >= solVolume) {
           amount = solVolume
         }
         solVolume = Math.max(0, solVolume - amount)
-        totalMass2 = solVolume
+        totalMass2 = solVolume + cylinderMass
         updateMassDisplay2()
         increaseLiquidLevel2()
       }
@@ -496,14 +514,14 @@
             solVolume * px_scalor_2 + "px"
         }
       }
-      function updateMassDisplay2(solVoume) {
+      function updateMassDisplay2() {
         document.querySelector("#total-mass-2 span").textContent =
-          totalMass2.toFixed(3)
+          (totalMass2 - tareOffset2).toFixed(3)
       }
 
       function mix() {
         mixVolume = (solVolume*10) + acidMass + 15
-        totalMass2 = acidMass + solVolume //needs formula and exponential decay formula!!
+        totalMass3 = acidMass + solVolume //needs formula and exponential decay formula!!
         updateMassDisplay3()
         increaseLiquidLevel3()
       }
@@ -524,7 +542,7 @@
       }
       function updateMassDisplay3(solVoume) {
         document.querySelector("#total-mass-3 span").textContent =
-          totalMass2.toFixed(3)
+          totalMass3.toFixed(3)
       }
     </script>
   </body>
