@@ -25,6 +25,36 @@
         border-radius: 5px;
       }
 
+
+      #dropdown-container {
+        margin: 40px auto 40px auto;
+        font-size: 18px;
+        font-weight: bold;
+        width: 800px;
+        gap: 10px;
+        padding: 10px 30px;
+        background-color: #ffd7e1;
+        border: 2px solid black;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #acidSetSelector {      
+        font-size: 18px;
+      }
+
+      #resetButton {
+        font-size: 18px;
+        background-image: linear-gradient(#ff9ab3, #fedee6 50%, #ff9ab3);
+        padding: 10px 20px;
+        margin-left: 80px;
+        border: 2px solid #FF2E37;
+        border-radius: 5px;
+        user-select: none;
+      }
+      #resetButton:hover {
+        border: 2px solid white;
+      }
+
       .reset-button-container button {
         padding: 10px 20px;
         font-size: 16px;
@@ -225,15 +255,23 @@
       
     </style>
   </head>
-  <body>
-    <div class="button-container" style="margin-bottom: 40px;">
-      <button onclick="reset()" class="control-button">Reset All Controls</button>
+  <body>  
+    <div id="dropdown-container">
+      <label for="acidSetSelector">Select Assigned Food Acid:</label>
+      <select id="acidSetSelector">
+        <option value="" selected>Choose from Dropdown</option>
+        <option value="set1">Citric Acid</option>
+        <option value="set2">Malic Acid</option>
+        <option value="set3">Malonic Acid</option>
+        <option value="set4">Tartaric Acid</option>
+      </select>
+      <button id="resetButton" class="control-button">Reset All Controls</button>
     </div>
 
     <div class="row" style="margin-bottom: 100px">
       <div class="column">
         <!--Balance Area #1 Code-->
-        <div id="glassware-container-1">
+        <div id="glassware-container-1" style="margin-top: 88px">
           <img id="flask-1" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" alt="Background">
           <canvas id="canvas"></canvas>
           <img id="balance-1" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true">
@@ -245,7 +283,7 @@
           <button id="addLargeParticlesBtn">Add Large Amount</button>
         </div>
         <div class="button-container">
-          <button id="tareButton-1" class="control-button">Tare</button>
+          <button id="tareButton-1" class="control-button">Tare Balance</button>
           <button id="clearButton" class="control-button">Empty Flask</button>
         </div>
       </div>
@@ -263,7 +301,7 @@
           <button id="pourButton">Pour In</button>
         </div>        
         <div class="button-container">
-          <button id="tareButton-2" class="control-button">Tare</button>
+          <button id="tareButton-2" class="control-button">Tare Balance</button>
           <button id="removeSolution" class="control-button">Pour Out</button>
         </div>
       </div>
@@ -305,7 +343,7 @@
 			updateMassDisplay_1() // run at start
       updateMassDisplay2()
       
-      function reset() {
+      document.getElementById("resetButton").addEventListener("click", () => {
       	amount = 0
         
         acidMass = 0
@@ -315,9 +353,9 @@
         pileWidth = 0
         updateMassDisplay_1()
       
-        totalMass2 = 0
-        tareOffset2 = 0
         solVolume = 0
+        totalMass2 = cylinderMass
+        tareOffset2 = 0
         liquidHeight2 = 0
         updateMassDisplay2()
         
@@ -328,7 +366,7 @@
         
         document.getElementById("solution").style.height = 0 + "px"
         document.getElementById("mixture").style.height = 0 + "px"
-      }
+      });
 
 
       const canvas = document.getElementById("canvas");
@@ -419,7 +457,7 @@
 
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#f7efe6";
+        ctx.fillStyle = "#eddcc8";
         particles.forEach(p => {
           ctx.beginPath();
           ctx.arc(p.x, p.y, particleRadius, 0, Math.PI * 2);
@@ -433,16 +471,13 @@
         ctx.shadowOffsetX = 5;
         ctx.shadowOffsetY = 5;
 
-        ctx.fillStyle = "#f7efe6";
-        ctx.strokeStyle = "#efe0cd"; // Border color
-        ctx.lineWidth = 0.2; // Border thickness
+        ctx.fillStyle = "#eddcc8";
         ctx.beginPath();
         ctx.moveTo(canvas.width / 2 - pileWidth, canvas.height);
         ctx.lineTo(canvas.width / 2 + pileWidth, canvas.height);
         ctx.lineTo(canvas.width / 2, canvas.height - pileHeight);
         ctx.closePath();
         ctx.fill();
-        ctx.stroke(); // Apply border
 
         ctx.restore(); // Restore previous context state
       }
