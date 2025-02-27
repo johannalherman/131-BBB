@@ -6,7 +6,7 @@
     <title>Chem 131 BBB-1 Simulation</title>
     <style>
       body {
-        max-width: 1000px;
+        max-width: 900px;
         margin: auto;
         font:
           18px Arial,
@@ -320,7 +320,7 @@
 
       <div class="row" >
         <div class="column">
-          <p><strong>1)</strong> Weigh out solid food acid</p>
+          <p style="font-size: 18pt; margin-bottom: 52px;"><strong>1)</strong> Weigh out solid food acid</p>
           <!--Balance Area #1 Code-->
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallParticlesBtn">Add Small Amount</button>
@@ -341,7 +341,7 @@
         </div>
 
         <div class="column">
-          <p style=""><strong>2)</strong> Weigh out sodium bicarbonate solution</p>
+        <p id="CarbConc" style="font-size: 18pt"><strong>2)</strong> Weigh out <strong><span>XXX</span> M</strong> sodium bicarbonate solution</p>
           <!--Balance Area #2 Code-->          
           <div class="button-container" style="margin-top: -20px;">
             <button id="dropsButton">Add Drops</button>
@@ -361,7 +361,7 @@
       </div>
       
           <div class="tab" style="margin: 20px 10px 40px 10px;">
-      <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}">Mix Reagents & Start Reaction!</button>
+      <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>3)</strong> Mix Reagents & Start Reaction!</button>
     </div>
       
     </div>
@@ -388,9 +388,15 @@
         return Math.random() * (max - min) + min;
       }
       
+      let concCarb = getRandomAmount(0.95, 1.05)
+      updateconc()      
+      function updateconc() {
+        document.querySelector("#CarbConc span").textContent =
+          (concCarb).toFixed(3)
+      }
+      
     	let currentAcid = ""
       let densityCarb = 1.07
-      let concCarb = 1 //getRandomAmount(0.95, 1.05)
       let amount = 0
       
     	let acidMass = 0
@@ -641,11 +647,11 @@
         if (size === 'drops') {
         	amount = getRandomAmount(0.1, 0.3)
         } else {
-        	amount = 1 //getRandomAmount(3, 4.5)
+        	amount = getRandomAmount(3, 4.5)
         }
         solVolume = Math.min(cylinderVolume / px_scalor_2, solVolume + amount)
         massCarb = (solVolume * densityCarb)
-        totalMass2 = massCarb + cylinderMass //should add formula for soln density!!
+        totalMass2 = massCarb + cylinderMass
         updateMassDisplay2()
         increaseLiquidLevel2()
       }
