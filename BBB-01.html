@@ -7,7 +7,6 @@
     <style>
       body {
         max-width: 1000px;
-	height: 1000px;
         margin: auto;
         font:
           18px Arial,
@@ -57,7 +56,7 @@
       }
       /* Style the tab content */
       .tabcontent {
-        display: none;
+        display: flex;
         padding: 10px;
         border: 2px solid #FF2E37;
         border-radius: 5px;
@@ -196,7 +195,6 @@
       }      
 
       #glassware-container-2 { 
-        display: block;
         margin: auto; 
         position: relative;
       }
@@ -247,9 +245,9 @@
         animation: tiltAnimation 0.5s 4.5 alternate ease-in-out;
       }
       @keyframes tiltAnimation {
-        0% {transform: rotate(-5deg) translateY(-50px) translateX(-50%);}
-        50% {transform: rotate(5deg) translateY(-50px) translateX(-50%);}
-        100% {transform: rotate(-5deg) translateY(-50px) translateX(-50%);}
+        0% {transform: rotate(-5deg) translateY(-50px);}
+        50% {transform: rotate(5deg) translateY(-50px);}
+        100% {transform: rotate(-5deg) translateY(-50px);}
       }
 
       .slosh {
@@ -260,23 +258,19 @@
         100% { transform: rotate(1deg) translateY(-50px) translateX(-50%);}
       }
       
-      .glassware-container-3 {
-        display: flex;
-        width: 450px;
-        justify-content: center;
+      .glassware-container-3 { 
+        width: 500px;
         position: relative;
       }
-      .bubble-container {
-        position: absolute;
-        bottom: 40px;
+      .mixture {
+        position: relative;
+        bottom: -358px;
         left: 50%;
         transform: translateX(-50%);
         width: 30%;
         height: 0;
-        background: red;
-        transition: height 0.3s;
+        background: #abdcf2;
         opacity: 0.75;
-        border-radius: 5px;
         z-index: -10;
       }
       .bubble {
@@ -286,30 +280,24 @@
         background-color: white;
       }
       #flask-3 {
-        position: absolute;
-        top: 325px;
-        transform: translateX(-50%);
-        border-radius: 5px;
+        display: flex;
+        margin: auto;
+        width: 400px;
+        z-index: 0;
+      }
+      #balance-3 {
+        position: relative;
+        top: -102px;
         width: 400px;
         z-index: 0;
       }
       #total-mass-3 {
-        position: absolute;
-        top: 675px;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        top: -190px;
         border-radius: 5px;
         font-size: 24px;
         font-weight: bold;
         z-index: 10;
-      }
-      #balance-3 {
-        position: absolute;
-        top: 655px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 400px;
-        z-index: 0;
       }
       
     </style>
@@ -324,7 +312,7 @@
         <option value="set3">Malonic Acid</option>
         <option value="set4">Tartaric Acid</option>
       </select>
-      <button id="resetButton" class="control-button">Reset All Controls</button>
+      <button id="resetButton" class="control-button" onclick="{resetButton()}">Reset All Controls</button>
     </div>
 
     <!-- Tab content -->
@@ -378,20 +366,17 @@
     </div>
 
     <div id="Reaction" class="tabcontent">
-      <!--Balance Area #1 Code-->
-      <div class="button-container">
-        <button onclick="stirFlask()">Stir Flask</button>
-      </div>   
+      <!--Balance Area #1 Code--> 
       
       <div id="glassware-container-3">
-        <div class="bubble-container" id="mixture"></div>
+        <div id="mixture" class="mixture"></div>
         <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
-      </div> 
-      
         <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
         <p id="total-mass-3"><span>0.000</span> g</p>
-      <div class="tab" style="margin: 550px 10px 40px 10px;">
-      <button class="tablinks" onclick="openTabs(event, 'Materials')" id="defaultOpen">Return to Gather new materials!</button>
+      </div> 
+        
+      <div class="tab" style="margin: -130px 10px 40px 10px;">
+      <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen">Return to Start New Trial!</button>
     </div>
       
     </div>
@@ -450,7 +435,8 @@
 			updateMassDisplay_1() // run at start
       updateMassDisplay2()
       
-      document.getElementById("resetButton").addEventListener("click", () => {
+      
+      function resetButton() {
       	document.getElementById("defaultOpen").click();
         
       	amount = 0
@@ -469,13 +455,12 @@
         updateMassDisplay2()
         
         mixVolume = 0
-        totalMass3 = 0
-        
+        totalMass3 = 0        
         updateMassDisplay3()
         
         document.getElementById("solution").style.height = 0 + "px"
         document.getElementById("mixture").style.height = 0 + "px"
-      });
+      }
 
 
       const canvas = document.getElementById("canvas");
@@ -625,8 +610,6 @@
 
 
       const mixButton = document.querySelector('button[onclick="mix()"]')
-      const stirFlaskButton = document.querySelector('button[onclick="stirFlask()"]')
-
              
       document.getElementById("tareButton-2").addEventListener("click", () => {
         tareOffset2 = totalMass2
@@ -679,7 +662,7 @@
         totalMass3 = acidMass + solVolume //needs formula and exponential decay formula!!			
         openTabs(event, 'Reaction')
         stirFlask()
-        setTimeout(() => { updateMassDisplay3()}, 2255);
+        setTimeout(() => { updateMassDisplay3()}, 2255)
         increaseLiquidLevel3()
       }
 
