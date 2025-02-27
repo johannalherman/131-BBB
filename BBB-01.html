@@ -28,7 +28,6 @@
       .tab {
         overflow: hidden;
         text-align: center; 
-        margin: 40px 10px 40px 10px;
       }
       /* Style the buttons that are used to open the tab content */
       .tab button { 
@@ -195,7 +194,7 @@
         z-index: 10;
       }      
 
-      #glassware-container-2, #glassware-container-3 { 
+      #glassware-container-2 { 
         display: block;
         margin: auto; 
         position: relative;
@@ -211,27 +210,9 @@
         font-weight: bold;
         z-index: 10;
       }
-      #total-mass-3 {
-        position: absolute;
-        bottom: 118px; /* Adjust as needed */
-        left: 50%; /* Adjust as needed */
-        transform: translateX(-50%);
-        border-radius: 5px;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 10;
-      }
 
-      #cylinder,
-      #flask-3 {
+      #cylinder {
         display: absolute;
-        width: 400px;
-        z-index: 0;
-      }
-
-      #balance-3 {
-        position: relative;
-        bottom: 107px;
         width: 400px;
         z-index: 0;
       }
@@ -261,35 +242,73 @@
         z-index: 0;
       }
 
-      #mixture {
-        position: absolute;
-        bottom: 200px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50%;
-        height: 0;
-        background: #abdcf2;
-        transition: height 0.3s;
-        opacity: 0.75;
-        border-radius: 5px;
-        z-index: -10;
-      }
-
       .tilt {
         animation: tiltAnimation 0.5s 4.5 alternate ease-in-out;
       }
       @keyframes tiltAnimation {
-        0% {transform: rotate(-5deg) translateY(-20px);}
-        50% {transform: rotate(5deg) translateY(-20px);}
-        100% {transform: rotate(-5deg) translateY(-20px);}
+        0% {transform: rotate(-5deg) translateY(-50px) translateX(-50%);}
+        50% {transform: rotate(5deg) translateY(-50px) translateX(-50%);}
+        100% {transform: rotate(-5deg) translateY(-50px) translateX(-50%);}
       }
 
       .slosh {
         animation: sloshAnimation 0.5s 4.5 alternate ease-in-out;
       }        
       @keyframes sloshAnimation {
-        0% { transform: rotate(-3deg) translateY(-15px) translateX(-50%);}
-        100% { transform: rotate(3deg) translateY(-15px) translateX(-50%);}
+        0% { transform: rotate(-2deg) translateY(-50px) translateX(-50%);}
+        100% { transform: rotate(1deg) translateY(-50px) translateX(-50%);}
+      }
+      
+      .glassware-container-3 {
+        display: flex;
+        width: 450px;
+        justify-content: center;
+        position: relative;
+      }
+      .bubble-container {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30%;
+        height: 0;
+        background: red;
+        transition: height 0.3s;
+        opacity: 0.75;
+        border-radius: 5px;
+        z-index: -10;
+      }
+      .bubble {
+        position: absolute;
+        bottom: 0;
+        border-radius: 50%;
+        background-color: white;
+      }
+      #flask-3 {
+        position: absolute;
+        top: 325px;
+        transform: translateX(-50%);
+        border-radius: 5px;
+        width: 400px;
+        z-index: 0;
+      }
+      #total-mass-3 {
+        position: absolute;
+        top: 675px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 5px;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 10;
+      }
+      #balance-3 {
+        position: absolute;
+        top: 655px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        z-index: 0;
       }
       
     </style>
@@ -351,7 +370,7 @@
         
       </div>
       
-          <div class="tab">
+          <div class="tab" style="margin: 20px 10px 40px 10px;">
       <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}">Mix Reagents & Start Reaction!</button>
     </div>
       
@@ -363,14 +382,14 @@
         <button onclick="stirFlask()">Stir Flask</button>
       </div>   
       
-      <div id="glassware-container-3" style="width: 600px; margin-top: 60px;">
-        <div id="mixture"></div>
+      <div id="glassware-container-3">
+        <div class="bubble-container" id="mixture"></div>
         <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
-        <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
-        <p id="total-mass-3"><span>0.000</span> g</p>
       </div> 
       
-      <div class="tab">
+        <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
+        <p id="total-mass-3"><span>0.000</span> g</p>
+      <div class="tab" style="margin: 550px 10px 40px 10px;">
       <button class="tablinks" onclick="openTabs(event, 'Materials')" id="defaultOpen">Return to Gather new materials!</button>
     </div>
       
@@ -394,7 +413,38 @@
       let increment = 0 // Adjust this value for how much water should be added to cylinder per click
       
       let mixVolume = 0
-      let totalMass3 = 0
+      let totalMass3 = 0      
+      
+      const bubbleRate = 20; // Adjust bubble generation rate
+      const bubbleSize = 5; // Adjust bubble size
+      const startHeight = 0; // Adjust starting height of bubbles
+      const endHeight = -250; // Adjust ending height of bubbles
+      
+      function createBubble() {
+        const container = document.getElementById("mixture");
+        const bubble = document.createElement("div");
+        bubble.classList.add("bubble");
+        bubble.style.width = `${bubbleSize}px`;
+        bubble.style.height = `${bubbleSize}px`;
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.bottom = "0px";
+
+        container.appendChild(bubble);
+
+        const animation = bubble.animate([
+          { transform: `translateY(${startHeight}px)`, opacity: 1 },
+          { transform: `translateY(${endHeight}px)`, opacity: 0 }
+        ], {
+          duration: 3000,
+          easing: "ease-out"
+        });
+
+        animation.onfinish = () => {
+          bubble.remove();
+        };
+      }
+
+      setInterval(createBubble, 1000 / bubbleRate);
       
 			updateMassDisplay_1() // run at start
       updateMassDisplay2()
@@ -623,7 +673,7 @@
       	if( solVolume == 0 && acidMass == 0 ) {
         	mixVolume = 0
         } else{
-        	mixVolume = (solVolume*10) + acidMass + 15
+        	mixVolume = (solVolume*10) + acidMass + 30
         }
         totalMass3 = acidMass + solVolume //needs formula and exponential decay formula!!			
         openTabs(event, 'Reaction')
