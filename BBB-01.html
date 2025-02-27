@@ -459,7 +459,10 @@
       const startHeight = 0; // Adjust starting height of bubbles
       const endHeight = -250; // Adjust ending height of bubbles
       
+      
+      let animationEnabled = false; // Set to true to enable animation
       function createBubble() {
+      	if (!animationEnabled) return; // Stop function if animation is disabled
         const container = document.getElementById("mixture");
         const bubble = document.createElement("div");
         bubble.classList.add("bubble");
@@ -481,6 +484,11 @@
         animation.onfinish = () => {
           bubble.remove();
         };
+      }
+      
+      // Toggle function to enable or disable bubbles
+      function toggleBubbles() {
+        animationEnabled = !animationEnabled;
       }
 
       setInterval(createBubble, 1000 / bubbleRate);
@@ -694,6 +702,7 @@
 
 
       function mix() {
+      	toggleBubbles()
         ResultsAcid()
       	if( solVolume == 0 && acidMass == 0 ) {
         	mixVolume = 0
@@ -703,7 +712,7 @@
         totalMass3 = acidMass + massCarb - gCO2 //needs formula and exponential decay formula!!			
         openTabs(event, 'Reaction')
         stirFlask()
-        setTimeout(() => { updateMassDisplay3()}, 2255)
+        setTimeout(() => { updateMassDisplay3();toggleBubbles()}, 2255)
         increaseLiquidLevel3()
       }
 
