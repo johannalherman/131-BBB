@@ -563,7 +563,7 @@
         }
         totalMass_1 += addMass;
         acidMass += addMass;
-        if (acidMass > 1){
+        if (acidMass > 2){
         	addSmallParticlesBtn.disabled = true;
         	addLargeParticlesBtn.disabled = true;
         }
@@ -582,6 +582,7 @@
       document.getElementById("clearButton").addEventListener("click", () => {
         tareOffset1 = 0;
         totalMass_1 = flask1Mass;
+        acidMass = 0;
         pileHeight = 0;
         pileWidth = 0;
         updateMassDisplay_1();
