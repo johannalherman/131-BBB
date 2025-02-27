@@ -25,6 +25,44 @@
         border-radius: 5px;
       }
 
+      .tab {
+        overflow: hidden;
+        text-align: center; 
+        margin: 40px 10px 40px 10px;
+      }
+      /* Style the buttons that are used to open the tab content */
+      .tab button { 
+        padding: 10px 20px;
+        background-image: linear-gradient(#b4c6ff, #e7edff 50%, #b4c6ff);
+        border: 2px solid;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        
+        font: 24px Arial, sans-serif;
+        outline: none;
+        transition: 0.3s;
+      }
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+        background-color: #f5f5f5;
+        border: 2px solid white;
+        border-radius: 5px;
+      }
+      /* Create an active/current tablink class */
+      .tab button.active {
+        border: 2px solid;
+        border-radius: 5px;
+        background-color: white;
+      }
+      /* Style the tab content */
+      .tabcontent {
+        display: none;
+        padding: 10px;
+        border: 2px solid #FF2E37;
+        border-radius: 5px;
+      }
+
 
       #dropdown-container {
         margin: 40px auto 40px auto;
@@ -74,6 +112,7 @@
 
       .button-container {
         text-align: center;
+        z-index: 100;
       }
       .button-container button {
         font-size: 16px;
@@ -170,7 +209,7 @@
         border-radius: 5px;
         font-size: 24px;
         font-weight: bold;
-        z-index: 0;
+        z-index: 10;
       }
       #total-mass-3 {
         position: absolute;
@@ -180,7 +219,7 @@
         border-radius: 5px;
         font-size: 24px;
         font-weight: bold;
-        z-index: 0;
+        z-index: 10;
       }
 
       #cylinder,
@@ -248,10 +287,10 @@
       .slosh {
         animation: sloshAnimation 0.5s 4.5 alternate ease-in-out;
       }        
-        @keyframes sloshAnimation {
-            0% { transform: rotate(-3deg) translateY(-15px) translateX(-50%);}
-            100% { transform: rotate(3deg) translateY(-15px) translateX(-50%);}
-        }
+      @keyframes sloshAnimation {
+        0% { transform: rotate(-3deg) translateY(-15px) translateX(-50%);}
+        100% { transform: rotate(3deg) translateY(-15px) translateX(-50%);}
+      }
       
     </style>
   </head>
@@ -268,56 +307,73 @@
       <button id="resetButton" class="control-button">Reset All Controls</button>
     </div>
 
-    <div class="row" style="margin-bottom: 100px">
-      <div class="column">
-        <!--Balance Area #1 Code-->
-        <div id="glassware-container-1" style="margin-top: 88px">
-          <img id="flask-1" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" alt="Background">
-          <canvas id="canvas"></canvas>
-          <img id="balance-1" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true">
-          <p id="total-mass-1"><span>0.000</span> g</p>
+    <!-- Tab content -->
+    <div id="Materials" class="tabcontent">
+
+      <div class="row" style="margin-top: 40px;">
+        <div class="column">
+          <!--Balance Area #1 Code-->
+          <div class="button-container" style="margin-top: -20px;">
+            <button id="addSmallParticlesBtn">Add Small Amount</button>
+            <button id="addLargeParticlesBtn">Add Large Amount</button>
+          </div>
+          
+          <div id="glassware-container-1" style="margin-top: 41px">
+            <img id="flask-1" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" alt="Background">
+            <canvas id="canvas"></canvas>
+            <img id="balance-1" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true">
+            <p id="total-mass-1"><span>0.000</span> g</p>
+          </div>
+
+          <div class="button-container" style="margin-top: 120px">
+            <button id="tareButton-1" class="control-button">Tare Balance</button>
+            <button id="clearButton" class="control-button">Empty Flask</button>
+          </div>
         </div>
 
-        <div class="button-container" style="margin-top: 120px;">
-          <button id="addSmallParticlesBtn">Add Small Amount</button>
-          <button id="addLargeParticlesBtn">Add Large Amount</button>
+        <div class="column">
+          <!--Balance Area #2 Code-->
+          <div id="glassware-container-2">
+            <div id="solution" class="solution"></div>
+            <img id="cylinder" src="https://github.com/johannalherman/Chem131/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true" />
+            <p id="total-mass-2"><span>0.000</span> g</p>
+          </div>
+
+          <div class="button-container">
+            <button id="dropsButton">Add Drops</button>
+            <button id="pourButton">Pour In</button>
+          </div>        
+          <div class="button-container" style="margin-bottom: 40px;">
+            <button id="tareButton-2" class="control-button">Tare Balance</button>
+            <button id="removeSolution" class="control-button">Pour Out</button>
+          </div>
         </div>
-        <div class="button-container">
-          <button id="tareButton-1" class="control-button">Tare Balance</button>
-          <button id="clearButton" class="control-button">Empty Flask</button>
-        </div>
+        
       </div>
-
-      <div class="column">
-        <!--Balance Area #2 Code-->
-        <div id="glassware-container-2">
-          <div id="solution" class="solution"></div>
-          <img id="cylinder" src="https://github.com/johannalherman/Chem131/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true" />
-          <p id="total-mass-2"><span>0.000</span> g</p>
-        </div>
-
-        <div class="button-container">
-          <button id="dropsButton">Add Drops</button>
-          <button id="pourButton">Pour In</button>
-        </div>        
-        <div class="button-container">
-          <button id="tareButton-2" class="control-button">Tare Balance</button>
-          <button id="removeSolution" class="control-button">Pour Out</button>
-        </div>
-      </div>
+      
+          <div class="tab">
+      <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}">Mix Reagents & Start Reaction!</button>
+    </div>
+      
     </div>
 
-    <!--Balance Area #1 Code-->
-    <div id="glassware-container-3" style="width: 600px">
-      <div id="mixture"></div>
-      <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
-      <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
-      <p id="total-mass-3"><span>0.000</span> g</p>
+    <div id="Reaction" class="tabcontent">
+      <!--Balance Area #1 Code-->
+      <div class="button-container">
+        <button onclick="stirFlask()">Stir Flask</button>
+      </div>   
+      
+      <div id="glassware-container-3" style="width: 600px; margin-top: 60px;">
+        <div id="mixture"></div>
+        <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
+        <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
+        <p id="total-mass-3"><span>0.000</span> g</p>
+      </div> 
+      
+      <div class="tab">
+      <button class="tablinks" onclick="openTabs(event, 'Materials')" id="defaultOpen">Return to Gather new materials!</button>
     </div>
-
-    <div class="button-container" style="margin-bottom: 40px">
-      <button onclick="mix()">Start Reaction!</button>
-      <button onclick="stirFlask()">Stir Flask</button>
+      
     </div>
 
     <script>
@@ -344,6 +400,8 @@
       updateMassDisplay2()
       
       document.getElementById("resetButton").addEventListener("click", () => {
+      	document.getElementById("defaultOpen").click();
+        
       	amount = 0
         
         acidMass = 0
@@ -426,13 +484,18 @@
         }
         
         if (size === 'small') {
-        	addMass = getRandomAmount(0.005, 0.020);
+        	addMass = getRandomAmount(0.010, 0.020);
         } else {
         	addMass = getRandomAmount(0.100, 0.200);
         }
         totalMass_1 += addMass;
         acidMass += addMass;
-        setTimeout(() => { updateMassDisplay_1()}, 500); }
+        if (acidMass > 1){
+        	addSmallParticlesBtn.disabled = true;
+        	addLargeParticlesBtn.disabled = true;
+        }
+        setTimeout(() => { updateMassDisplay_1()}, 500); 
+        }
       
       function updateMassDisplay_1() {
       	document.getElementById("total-mass-1").textContent = `${(totalMass_1 - tareOffset1).toFixed(3)} g`;
@@ -449,6 +512,8 @@
         pileHeight = 0;
         pileWidth = 0;
         updateMassDisplay_1();
+        addSmallParticlesBtn.disabled = false;
+        addLargeParticlesBtn.disabled = false;
       });
 
       function update() {
@@ -555,9 +620,15 @@
       }
 
       function mix() {
-        mixVolume = (solVolume*10) + acidMass + 15
-        totalMass3 = acidMass + solVolume //needs formula and exponential decay formula!!
-        updateMassDisplay3()
+      	if( solVolume == 0 && acidMass == 0 ) {
+        	mixVolume = 0
+        } else{
+        	mixVolume = (solVolume*10) + acidMass + 15
+        }
+        totalMass3 = acidMass + solVolume //needs formula and exponential decay formula!!			
+        openTabs(event, 'Reaction')
+        stirFlask()
+        setTimeout(() => { updateMassDisplay3()}, 2255);
         increaseLiquidLevel3()
       }
 
@@ -569,6 +640,7 @@
         
         const img2 = document.getElementById("mixture")
         img2.classList.remove("slosh")
+        void img2.offsetWidth // Trigger reflow to restart animation
         img2.classList.add("slosh")
       }
 
@@ -579,6 +651,32 @@
         document.querySelector("#total-mass-3 span").textContent =
           totalMass3.toFixed(3)
       }
+      
+      
+      function openTabs(evt, Sim_part) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(Sim_part).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    
     </script>
   </body>
 </html>
