@@ -242,7 +242,7 @@
       }
 
       .tilt {
-        animation: tiltAnimation 0.5s 4.5 alternate ease-in-out;
+        animation: tiltAnimation 1s 10 alternate ease-in-out;
       }
       @keyframes tiltAnimation {
         0% {transform: rotate(-5deg) translateY(-50px);}
@@ -251,7 +251,7 @@
       }
 
       .slosh {
-        animation: sloshAnimation 0.5s 4.5 alternate ease-in-out;
+        animation: sloshAnimation 1s 10 alternate ease-in-out;
       }        
       @keyframes sloshAnimation {
         0% { transform: rotate(-2deg) translateY(-50px) translateX(-50%);}
@@ -312,7 +312,7 @@
         <option value="Malonic">Malonic Acid</option>
         <option value="Tartaric">Tartaric Acid</option>
       </select>
-      <button id="resetButton" class="control-button" onclick="{resetButton();resetAcid()}">Reset All Controls</button>
+      <button id="resetButton" class="control-button" onclick="{resetButton();resetAcid();disableButtons1();}">Reset All Controls</button>
     </div>
 
     <!-- Tab content -->
@@ -323,8 +323,8 @@
           <p style="font-size: 18pt; margin-bottom: 52px;"><strong>1)</strong> Weigh out solid food acid</p>
           <!--Balance Area #1 Code-->
           <div class="button-container" style="margin-top: -20px;">
-            <button id="addSmallParticlesBtn">Add Small Amount</button>
-            <button id="addLargeParticlesBtn">Add Large Amount</button>
+            <button id="addSmallParticlesBtn" type="button" disabled>Add Small Amount</button>
+            <button id="addLargeParticlesBtn" type="button" disabled>Add Large Amount</button>
           </div>
           
           <div id="glassware-container-1" style="margin-top: 104px">
@@ -359,27 +359,27 @@
         </div>
         
       </div>
-      
-          <div class="tab" style="margin: 20px 10px 40px 10px;">
-      <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>3)</strong> Mix Reagents & Start Reaction!</button>
-    </div>
-      
+
+      <div class="tab" style="margin: 20px 10px 40px 10px;">
+        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>3)</strong> Mix Reagents & Start Reaction!</button>
+      </div>
+
     </div>
 
     <div id="Reaction" class="tabcontent">
       <!--Balance Area #1 Code--> 
-      
+
       <div id="glassware-container-3">
         <div id="mixture" class="mixture"></div>
         <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
         <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
         <p id="total-mass-3"><span>0.000</span> g</p>
       </div> 
-        
+
       <div class="tab" style="margin: -130px 10px 40px 10px;">
-      <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen">Return to Start New Trial!</button>
-    </div>
-      
+        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen">Return to Start New Trial!</button>
+      </div>
+
     </div>
 
     <script>      
@@ -420,6 +420,7 @@
       
       document.getElementById("acidSetSelector").addEventListener("change", function(event) {    
         currentAcid = event.target.value
+        enableButtons1()
       });
       
       function resetButton() {
@@ -445,6 +446,7 @@
         updateMassDisplay3()
         massCarb = 0
         gCO2 = 0
+        animationEnabled = false
         
         document.getElementById("solution").style.height = 0 + "px"
         document.getElementById("mixture").style.height = 0 + "px"
@@ -491,11 +493,6 @@
           bubble.remove();
         };
       }
-      
-      // Toggle function to enable or disable bubbles
-      function toggleBubbles() {
-        animationEnabled = !animationEnabled;
-      }
 
       setInterval(createBubble, 1000 / bubbleRate);
 
@@ -503,6 +500,15 @@
       const ctx = canvas.getContext("2d");
       const addSmallParticlesBtn = document.getElementById("addSmallParticlesBtn");
       const addLargeParticlesBtn = document.getElementById("addLargeParticlesBtn");
+      
+      function disableButtons1() {
+        addSmallParticlesBtn.disabled = true;
+        addLargeParticlesBtn.disabled = true;
+      }
+      function enableButtons1() {
+        addSmallParticlesBtn.disabled = false;
+        addLargeParticlesBtn.disabled = false;
+      }
 
       const particles = [];
       const gravity = 0.25;
@@ -645,7 +651,7 @@
       
       function addSolution(size) {
         if (size === 'drops') {
-        	amount = getRandomAmount(0.1, 0.3)
+        	amount = 0.1
         } else {
         	amount = getRandomAmount(3, 4.5)
         }
@@ -657,7 +663,7 @@
       }
 
       function removeSolution() {
-        amount = getRandomAmount(2, 3)
+        amount = 2
         if (amount >= solVolume) {
           amount = solVolume
         }
@@ -683,10 +689,7 @@
       }
       
           
-          
-      const mixButton = document.querySelector('button[onclick="mix()"]');
-      
-      
+              
 			
       const MolarMasses = {
         Malic: { MW: 134.0874, rxnRatio: 2},
@@ -708,18 +711,18 @@
 
 
       function mix() {
-      	toggleBubbles()
-        ResultsAcid()
-      	if( solVolume == 0 && acidMass == 0 ) {
-        	mixVolume = 0
+        if( solVolume == 0 && acidMass == 0 ) {
+          return;
         } else{
-        	mixVolume = (solVolume*10) + acidMass + 30
+          animationEnabled = true
+          ResultsAcid()
+          mixVolume = ((solVolume*10) + acidMass) + 30
+          totalMass3 = acidMass + massCarb - gCO2 //needs formula and exponential decay formula!!			
+          openTabs(event, 'Reaction')
+          stirFlask()
+          setTimeout(() => { updateMassDisplay3();animationEnabled = false;}, 10005)
+          increaseLiquidLevel3()
         }
-        totalMass3 = acidMass + massCarb - gCO2 //needs formula and exponential decay formula!!			
-        openTabs(event, 'Reaction')
-        stirFlask()
-        setTimeout(() => { updateMassDisplay3();toggleBubbles()}, 2255)
-        increaseLiquidLevel3()
       }
 
       function stirFlask() {
@@ -765,6 +768,9 @@
 
       // Get the element with id="defaultOpen" and click on it
       document.getElementById("defaultOpen").click();
+      
+      
+
       
     
     </script>
