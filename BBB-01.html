@@ -318,15 +318,16 @@
     <!-- Tab content -->
     <div id="Materials" class="tabcontent">
 
-      <div class="row" style="margin-top: 40px;">
+      <div class="row" >
         <div class="column">
+          <p><strong>1)</strong> Weigh out solid food acid</p>
           <!--Balance Area #1 Code-->
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallParticlesBtn">Add Small Amount</button>
             <button id="addLargeParticlesBtn">Add Large Amount</button>
           </div>
           
-          <div id="glassware-container-1" style="margin-top: 41px">
+          <div id="glassware-container-1" style="margin-top: 104px">
             <img id="flask-1" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" alt="Background">
             <canvas id="canvas"></canvas>
             <img id="balance-1" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true">
@@ -340,17 +341,17 @@
         </div>
 
         <div class="column">
-          <!--Balance Area #2 Code-->
-          <div id="glassware-container-2">
+          <p style=""><strong>2)</strong> Weigh out sodium bicarbonate solution</p>
+          <!--Balance Area #2 Code-->          
+          <div class="button-container" style="margin-top: -20px;">
+            <button id="dropsButton">Add Drops</button>
+            <button id="pourButton">Pour In</button>
+          </div>  
+          <div id="glassware-container-2" style="margin-top: 20px">
             <div id="solution" class="solution"></div>
             <img id="cylinder" src="https://github.com/johannalherman/Chem131/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true" />
             <p id="total-mass-2"><span>0.000</span> g</p>
-          </div>
-
-          <div class="button-container">
-            <button id="dropsButton">Add Drops</button>
-            <button id="pourButton">Pour In</button>
-          </div>        
+          </div>      
           <div class="button-container" style="margin-bottom: 40px;">
             <button id="tareButton-2" class="control-button">Tare Balance</button>
             <button id="removeSolution" class="control-button">Pour Out</button>
