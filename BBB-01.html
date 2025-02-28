@@ -373,11 +373,12 @@
         <div id="mixture" class="mixture"></div>
         <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
         <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
-        <p id="total-mass-3"><span>0.000</span> g</p>
+        <p id="total-mass-3"><span>- - - - . - - -</span> g</p> 
       </div> 
 
       <div class="tab" style="margin: -130px 10px 40px 10px;">
-        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen">Return to Start New Trial!</button>
+      <p>...wait for reaction to complete.</p>
+        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen"><strong>4)</strong> Return to Start New Trial!</button>
       </div>
 
     </div>
@@ -457,44 +458,11 @@
         acidSetSelector.value = "";
       }
       
-			updateMassDisplay_1() // run at start
+      // run at start
+			updateMassDisplay_1() 
       updateMassDisplay2()
+      document.querySelector('#total-mass-3 span').textContent = "- - - - . - - -";
 
-      
-      
-      const bubbleRate = 16; // Adjust bubble generation rate
-      const bubbleSize = 4; // Adjust bubble size
-      const startHeight = 0; // Adjust starting height of bubbles
-      const endHeight = -250; // Adjust ending height of bubbles
-      
-      
-      let animationEnabled = false; // Set to true to enable animation
-      function createBubble() {
-      	if (!animationEnabled) return; // Stop function if animation is disabled
-        const container = document.getElementById("mixture");
-        const bubble = document.createElement("div");
-        bubble.classList.add("bubble");
-        bubble.style.width = `${bubbleSize}px`;
-        bubble.style.height = `${bubbleSize}px`;
-        bubble.style.left = `${Math.random() * 100}%`;
-        bubble.style.bottom = "0px";
-
-        container.appendChild(bubble);
-
-        const animation = bubble.animate([
-          { transform: `translateY(${startHeight}px)`, opacity: 1 },
-          { transform: `translateY(${endHeight}px)`, opacity: 0 }
-        ], {
-          duration: 3000,
-          easing: "ease-out"
-        });
-
-        animation.onfinish = () => {
-          bubble.remove();
-        };
-      }
-
-      setInterval(createBubble, 1000 / bubbleRate);
 
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d");
@@ -699,9 +667,42 @@
         Acetic: { MW: 60.052, rxnRatio: 1},
         Tartaric: { MW: 150.087, rxnRatio: 2}
       };
+       
+      
+      let bubbleRate = 16; // Adjust bubble generation rate
+      let bubbleSize = 6; // Adjust bubble size
+      let startHeight = 0; // Adjust starting height of bubbles
+      let endHeight = -250; // Adjust ending height of bubbles
       
       
-      
+      let animationEnabled = false; // Set to true to enable animation
+      function createBubble() {
+      	if (!animationEnabled) return; // Stop function if animation is disabled
+        const container = document.getElementById("mixture");
+        const bubble = document.createElement("div");
+        bubble.classList.add("bubble");
+        bubble.style.width = `${bubbleSize}px`;
+        bubble.style.height = `${bubbleSize}px`;
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.bottom = "0px";
+
+        container.appendChild(bubble);
+
+        const animation = bubble.animate([
+          { transform: `translateY(${startHeight}px)`, opacity: 1 },
+          { transform: `translateY(${endHeight}px)`, opacity: 0 }
+        ], {
+          duration: 3000,
+          easing: "ease-out"
+        });
+
+        animation.onfinish = () => {
+          bubble.remove();
+        };
+      }
+
+      setInterval(createBubble, 1000 / bubbleRate);
+
       // Calculate reaction results
       function ResultsAcid() {
       	mmoleH = ((acidMass / (MolarMasses[currentAcid].MW)) * 1000) * (MolarMasses[currentAcid].rxnRatio);
@@ -709,23 +710,12 @@
         mmoleCO2 = Math.min(mmoleH,mmoleCarb);
         gCO2 = (mmoleCO2 * 44.01) / 1000;
       }
-
-
-      function mix() {
-        if( solVolume == 0 && acidMass == 0 ) {
-          return;
-        } else{
-          animationEnabled = true
-          ResultsAcid()
-          mixVolume = ((solVolume*10) + acidMass) + 30
-          totalMass3 = acidMass + massCarb - gCO2 //needs formula and exponential decay formula!!			
-          openTabs(event, 'Reaction')
-          stirFlask()
-          setTimeout(() => { updateMassDisplay3();animationEnabled = false;}, 10005)
-          increaseLiquidLevel3()
-        }
+      function increaseLiquidLevel3() {
+        document.getElementById("mixture").style.height = mixVolume + "px"
       }
-
+      function updateMassDisplay3() {
+        document.querySelector("#total-mass-3 span").textContent = totalMass3.toFixed(3)
+      }
       function stirFlask() {
         const img1 = document.getElementById("flask-3")
         img1.classList.remove("tilt")
@@ -737,13 +727,46 @@
         void img2.offsetWidth // Trigger reflow to restart animation
         img2.classList.add("slosh")
       }
+      
 
-      function increaseLiquidLevel3() {
-        document.getElementById("mixture").style.height = mixVolume + "px"
-      }
-      function updateMassDisplay3(solVoume) {
-        document.querySelector("#total-mass-3 span").textContent = totalMass3.toFixed(3)
-      }
+    const Decays = {
+      1: { stir: 00000, mass: 11000, repRate: 0.0500 },
+      2: { stir: 12000, mass: 23000, repRate: 0.7500 },
+      3: { stir: 24000, mass: 35000, repRate: 0.8750 },
+      4: { stir: 36000, mass: 47000, repRate: 0.9375 },
+      5: { stir: 48000, mass: 59000, repRate: 1.0000 }
+    };
+      
+function mix() {
+  if (solVolume == 0 && acidMass == 0) {
+    return;
+  } else {
+    ResultsAcid();
+    openTabs(event, 'Reaction');
+    mixVolume = (solVolume * 10) + acidMass + 30;
+    increaseLiquidLevel3();
+    animationEnabled = true;
+    
+		// subsequent iterations
+    for (let ss = 1; ss < 6; ss++) {
+      setTimeout(() => {
+				stirFlask();
+        bubbleSize -= 1;
+      }, Decays[ss]["stir"]); // Each cycle happens every 20 seconds
+    }
+    
+		// subsequent iterations
+    for (let mm = 1; mm < 6; mm++) {
+      setTimeout(() => {
+        totalMass3 = acidMass + massCarb + flask1Mass - (Decays[mm]["repRate"] * gCO2);
+        updateMassDisplay3(); // Wait **10 seconds** after stirring before updating mass
+      }, Decays[mm]["mass"]); // 10s delay for updateMassDisplay3()
+    }
+    
+  setTimeout(() => { animationEnabled = false; stirFlask();}, 60000); // Stops animation after all cycles
+  }
+}
+
       
       
       function openTabs(evt, Sim_part) {
