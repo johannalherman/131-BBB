@@ -304,7 +304,7 @@
   </head>
   <body> 
     <div id="dropdown-container">
-      <label for="acidSetSelector">Select Assigned Food Acid:</label>
+      <label for="acidSetSelector"><strong>1)</strong> Select Assigned Food Acid:</label>
       <select id="acidSetSelector">
         <option value="" selected>Choose from Dropdown</option>
         <option value="Citric">Citric Acid</option>
@@ -320,7 +320,7 @@
 
       <div class="row" >
         <div class="column">
-          <p style="font-size: 18pt; margin-bottom: 52px;"><strong>1)</strong> Weigh out solid food acid</p>
+          <p style="font-size: 18pt; margin-bottom: 52px;"><strong>2)</strong> Weigh out solid food acid</p>
           <!--Balance Area #1 Code-->
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallParticlesBtn" type="button" disabled>Add Small Amount</button>
@@ -341,7 +341,7 @@
         </div>
 
         <div class="column">
-        <p id="CarbConc" style="font-size: 18pt"><strong>2)</strong> Weigh out <strong><span>XXX</span> M</strong> sodium bicarbonate solution</p>
+        <p id="CarbConc" style="font-size: 18pt"><strong>3)</strong> Weigh out <strong><span>XXX</span> M</strong> sodium bicarbonate solution</p>
           <!--Balance Area #2 Code-->          
           <div class="button-container" style="margin-top: -20px;">
             <button id="dropsButton">Add Drops</button>
@@ -361,7 +361,7 @@
       </div>
 
       <div class="tab" style="margin: 20px 10px 40px 10px;">
-        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>3)</strong> Mix Reagents & Start Reaction!</button>
+        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>4)</strong> Mix Reagents & Start Reaction!</button>
       </div>
 
     </div>
@@ -378,7 +378,7 @@
 
       <div class="tab" style="margin: -130px 10px 40px 10px;">
       <p>...wait for reaction to complete.</p>
-        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen"><strong>4)</strong> Return to Start New Trial!</button>
+        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen"><strong>5)</strong> Return to Start New Trial!</button>
       </div>
 
     </div>
