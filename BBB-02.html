@@ -8,14 +8,12 @@
       body {
         width: 1000px;
         margin: auto;
-        font: 18px Arial, sans-serif;
+        font: 20px Arial, sans-serif;
         padding: 20px;
         text-align: center;
       }
-
-      #instruction-message {
-        margin: auto;
-        text-align: left;
+      button {        
+        font-size: 18px;
       }
 
       .tab {
@@ -24,14 +22,13 @@
       }
       /* Style the buttons that are used to open the tab content */
       .tab button { 
+        font-size: 24px;
         padding: 10px 20px;
         background-image: linear-gradient(#b4c6ff, #e7edff 50%, #b4c6ff);
         border: 2px solid;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s;
-        
-        font: 24px Arial, sans-serif;
+        transition: background-color 0.3s;        
         outline: none;
         transition: 0.3s;
       }
@@ -57,7 +54,6 @@
 
       #dropdown-container {
         margin: 40px auto 40px auto;
-        font-size: 22px;
         text-align: left;
         font-weight: bold;
         width: 900px;
@@ -68,37 +64,8 @@
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
-      #acidSetSelector, #shapeSetSelector {      
-        font-size: 22px;
-      }
-
-      #resetButton {
-        font-size: 18px;
-        background-image: linear-gradient(#ff9ab3, #fedee6 50%, #ff9ab3);
-        padding: 10px 20px;
-        margin-left: 80px;
-        border: 2px solid #FF2E37;
-        border-radius: 5px;
-        user-select: none;
-      }
-      #resetButton:hover {
-        border: 2px solid white;
-      }
-
-      .reset-button-container button {
-        padding: 10px 20px;
-        background-image: linear-gradient(#ff9ab3, #fedee6 50%, #ff9ab3);
-        border: 2px solid #FF2E37;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      .reset-button-container button:hover {
-        border: 2px solid white;
-      }
-      .reset-button-container button:focus {
-        padding: 9px 19px;
-        border: 3px solid #FF2E37;
+      #acidSetSelector, #shapeSetSelector {
+        font-size: 20px;
       }
 
       .button-container {
@@ -106,7 +73,6 @@
         z-index: 100;
       }
       .button-container button {
-        font-size: 16px;
         margin: 20px 0px 0px 0px;
         padding: 10px 20px;
         border: 2px solid;
@@ -256,7 +222,7 @@
       }
       #total-mass-2 {
         position: absolute;
-        bottom: 2.5%; /* Adjust as needed */
+        bottom: 10px; /* Adjust as needed */
         left: 50%; /* Adjust as needed */
         transform: translateX(-50%);
         border-radius: 5px;
@@ -288,7 +254,7 @@
   <body> 
     <div id="dropdown-container">
       <div class="row" >
-        <div class="column-dropdowns" style="flex: 80%;">
+        <div class="column-dropdowns" style="flex: 75%;">
           <p>
             <label for="acidSetSelector"><strong>1)</strong> Select Assigned Food Acid:</label>
             <select id="acidSetSelector">
@@ -309,7 +275,7 @@
           </select>    
         </p>  
         </div>
-        <div class="column-dropdowns" style="flex: 35%;">
+        <div class="column-dropdowns" style="flex: 25%;">
           <button id="resetButton" class="control-button" onclick="{resetButton();resetAcid();disableButtons1();}">Reset All Controls</button>
         </div>
       </div>
@@ -335,17 +301,17 @@
         </div>
 
         <div class="column">
-          <p style="font-size: 18pt; text-align: left;"><strong>3)</strong> Weigh out solid food acid</p>
+          <p style="text-align: left;"><strong>3)</strong> Weigh out solid food acid</p>
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallacidBtn" type="button" disabled>Add Small Amount</button>
             <button id="addLargeacidBtn" type="button" disabled>Add Large Amount</button>
           </div>
-          <p style="font-size: 18pt; text-align: left;"><strong>4)</strong> Weigh out solid baking soda</p>
+          <p style="text-align: left;"><strong>4)</strong> Weigh out solid baking soda</p>
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallbicarbBtn" type="button" disabled>Add Small Amount</button>
             <button id="addLargebicarbBtn" type="button" disabled>Add Large Amount</button>
           </div>
-          <p style="font-size: 18pt; text-align: left;"><strong>5)</strong> Weigh out solid cornstarch</p>
+          <p style="text-align: left;"><strong>5)</strong> Weigh out solid cornstarch</p>
           <div class="button-container" style="margin-top: -20px;">
             <button id="addSmallcornstarchBtn" type="button" disabled>Add Small Amount</button>
             <button id="addLargecornstarchBtn" type="button" disabled>Add Large Amount</button>
@@ -361,8 +327,10 @@
 
     <div id="Materials2" class="tabcontent">
       <!--Balance Area #2 Code-->
+      <p><strong>7)</strong> Weigh out <strong><span>XXX</span> M</strong> sodium bicarbonate solution</p>
       <div class="button-container" style="margin-bottom: 0px;">
-        <button onclick="addWater()">Add D.I. Water</button>
+            <button id="dropsButton">Add Drops</button>
+            <button id="pourButton">Pour In</button>
       </div>
       <div id="glassware-container-2">
         <div id="liquid"></div>
@@ -375,7 +343,7 @@
       </div>
 
       <div class="tab" style="margin: 50px 10px 40px 10px;">
-        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>7)</strong> Add dried bath bomb into water!</button>
+        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>8)</strong> Add dried bath bomb into water!</button>
       </div>
     </div>
 
@@ -393,7 +361,7 @@
 
       <div class="tab" style="margin: -130px 10px 40px 10px;">
       <p>...wait for reaction to complete.</p>
-        <button class="tablinks" onclick="{openTabs(event, 'Materials1'); resetButton()}" id="defaultOpen"><strong>8)</strong> Return to Start New Trial!</button>
+        <button class="tablinks" onclick="{openTabs(event, 'Materials1'); resetButton()}" id="defaultOpen"><strong>9)</strong> Return to Start New Trial!</button>
       </div>
 
     </div>
@@ -640,11 +608,17 @@
       let tareOffset2 = 0
       let lim1 = 180;
     
-      const addWaterButton = document.querySelector('button[onclick="addWater()"]');        
+
+      document.getElementById("dropsButton").addEventListener("click", () => {
+        addWater("drops");
+      }); 
+      document.getElementById("pourButton").addEventListener("click", () => {
+        addWater("pour");
+      });
       document.getElementById("tareButton-2").addEventListener("click", () => {
         tareOffset2 = totalMass2;
         updateMassDisplay2();
-      });         
+      });
       document.getElementById("clearButton-2").addEventListener("click", () => {
         tareOffset2 = 0
         totalMass2 = beakerMass
@@ -661,8 +635,12 @@
       function updateMassDisplay2() {
         document.querySelector('#total-mass-2 span').textContent =  `${(totalMass2 - tareOffset2).toFixed(3)}`;
       }
-      function addWater() {
-        amount = getRandomAmount(5, 15);
+      function addWater(size) {
+        if (size === 'drops') {
+        	amount = 0.5
+        } else {
+        	amount = getRandomAmount(10, 15)
+        }
         if (waterMass > 50) amount = 0; // Prevent liquid from going above limit
 
         totalMass2 += amount;
