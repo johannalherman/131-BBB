@@ -8,12 +8,12 @@
       body {
         width: 1000px;
         margin: auto;
-        font: 20px Arial, sans-serif;
+        font: 18px Arial, sans-serif;
         padding: 20px;
         text-align: center;
       }
       button {        
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .tab {
@@ -22,7 +22,7 @@
       }
       /* Style the buttons that are used to open the tab content */
       .tab button { 
-        font-size: 24px;
+        font-size: 22px;
         padding: 10px 20px;
         background-image: linear-gradient(#b4c6ff, #e7edff 50%, #b4c6ff);
         border: 2px solid;
@@ -154,65 +154,6 @@
         font-weight: bold;
         z-index: 10;
       } 
-
-      .tilt {
-        animation: tiltAnimation 1s 10 alternate ease-in-out;
-      }
-      @keyframes tiltAnimation {
-        0% {transform: rotate(-5deg) translateY(-50px);}
-        50% {transform: rotate(5deg) translateY(-50px);}
-        100% {transform: rotate(-5deg) translateY(-50px);}
-      }
-
-      .slosh {
-        animation: sloshAnimation 1s 10 alternate ease-in-out;
-      }        
-      @keyframes sloshAnimation {
-        0% { transform: rotate(-2deg) translateY(-50px) translateX(-50%);}
-        100% { transform: rotate(1deg) translateY(-50px) translateX(-50%);}
-      }
-      
-      .glassware-container-3 { 
-        width: 500px;
-        position: relative;
-      }
-      .mixture {
-        position: relative;
-        bottom: -358px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30%;
-        height: 0;
-        background: #abdcf2;
-        opacity: 0.75;
-        z-index: -10;
-      }
-      .bubble {
-        position: absolute;
-        bottom: 0;
-        border-radius: 50%;
-        background-color: white;
-      }
-      #flask-3 {
-        display: flex;
-        margin: auto;
-        width: 400px;
-        z-index: 0;
-      }
-      #balance-3 {
-        position: relative;
-        top: -102px;
-        width: 400px;
-        z-index: 0;
-      }
-      #total-mass-3 {
-        position: relative;
-        top: -190px;
-        border-radius: 5px;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 10;
-      }
       
 
       #glassware-container-2 {
@@ -248,6 +189,112 @@
         z-index: -10;
       }
 
+      .tilt {
+        animation: tiltAnimation 1s 10 alternate ease-in-out;
+      }
+      @keyframes tiltAnimation {
+        0% {transform: rotate(-5deg) translateY(-50px);}
+        50% {transform: rotate(5deg) translateY(-50px);}
+        100% {transform: rotate(-5deg) translateY(-50px);}
+      }
+
+      .slosh {
+        animation: sloshAnimation 1s 10 alternate ease-in-out;
+      }        
+      @keyframes sloshAnimation {
+        0% { transform: rotate(-2deg) translateY(-50px);}
+        100% { transform: rotate(1deg) translateY(-50px);}
+      }
+      
+      .glassware-container-3 { 
+        width: 500px;
+        position: relative;
+      }
+      .mixture {
+        position: relative;
+        bottom: -358px;
+        margin: auto;
+        width: 30%;
+        height: 0;
+        background: #abdcf2;
+        opacity: 0.75;
+        z-index: -10;
+      }
+      .bubble {
+        position: absolute;
+        bottom: 0;
+        border-radius: 50%;
+        background-color: white;
+      }
+      #flask-3 {
+        display: flex;
+        margin: auto;
+        width: 400px;
+        z-index: 0;
+      }
+      #balance-3 {
+        position: relative;
+        top: -102px;
+        width: 400px;
+        z-index: 0;
+      }
+      #total-mass-3 {
+        position: relative;
+        top: -190px;
+        border-radius: 5px;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 10;
+      }
+      
+      .shapecontainer { 
+        margin: auto; 
+        position: absolute; 
+      }      
+      .shape {
+        height: 70px;
+        position: absolute;
+        margin: auto;
+        animation: none; /* Starts with no animation */
+      }
+      .heart {
+        bottom: 358px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('https://github.com/johannalherman/131-BBB/blob/main/HeartSide.png?raw=true');
+        z-index: -10;
+      }
+      .star {
+        bottom: 358px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('https://github.com/johannalherman/131-BBB/blob/main/Star.png?raw=true');
+        z-index: -10;
+      }      
+      .bear {
+        bottom: 358px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('https://github.com/johannalherman/131-BBB/blob/main/Gummy%20Bear.png?raw=true');
+        z-index: -10;
+      }
+
+      /* Shrinking Animation */
+      .shrink {
+        animation: shrink 10s linear forwards;
+      }
+      @keyframes shrink {
+        0% { transform: translateY(-50px) scale(1);}
+        99% { transform: translateY(-50px) scale(0.5);}
+        100% { transform: translateY(50px) scale(0.5);}
+      }
+
     </style>
   </head>
   <body> 
@@ -268,9 +315,9 @@
           <label for="shapeSetSelector"><strong>2)</strong> Select your bath bomb shape:</label>
           <select id="shapeSetSelector">
             <option value="" selected>Choose from Dropdown</option>
-            <option value="Star">Star</option>
-            <option value="Heart">Heart</option>
-            <option value="Bear">Gummy Bear</option>
+            <option value="star">Star</option>
+            <option value="heart">Heart</option>
+            <option value="bear">Gummy Bear</option>
           </select>    
         </p>  
         </div>
@@ -351,15 +398,18 @@
     <div id="Reaction" class="tabcontent">
       <!--Balance Area #3 Code--> 
 
-      <div id="glassware-container-3">
-        <div id="mixture" class="mixture"></div>
+      <div id="glassware-container-3">  
+        <div id="mixture" class="mixture"></div>  
         <img id="flask-3" src="https://github.com/johannalherman/131-BBB/blob/main/Falsk2.png?raw=true" />
         <img id="balance-3" src="https://github.com/johannalherman/131-BBB/blob/main/Balance.png?raw=true" />
         <p id="total-mass-3"><span>- - - - . - - -</span> g</p> 
+        <div class="shapecontainer">
+          <div id="shape" class="shape"></div> <!-- Default shape -->
+        </div>
       </div> 
 
-      <div class="tab" style="margin: -130px 10px 40px 10px;">
-      <p>...wait for reaction to complete.</p>
+      <div class="tab" style="margin: -160px 10px 40px 10px;">
+        <p>...wait for reaction to complete.</p>
         <button class="tablinks" onclick="{openTabs(event, 'Materials1'); resetButton()}" id="defaultOpen"><strong>9)</strong> Return to Start New Trial!</button>
       </div>
 
@@ -720,13 +770,33 @@
       }
       
 
-    const Decays = {
-      1: { stir: 00000, mass: 11000, repRate: 0.0500 },
-      2: { stir: 12000, mass: 23000, repRate: 0.7500 },
-      3: { stir: 24000, mass: 35000, repRate: 0.8750 },
-      4: { stir: 36000, mass: 47000, repRate: 0.9375 },
-      5: { stir: 48000, mass: 59000, repRate: 1.0000 }
-    };
+      const Decays = {
+        1: { stir: 00000, mass: 11000, repRate: 0.0500, size: 70, sizesDeduction: 0 },
+        2: { stir: 12000, mass: 23000, repRate: 0.7500, size: 35, sizesDeduction: 35 },
+        3: { stir: 24000, mass: 35000, repRate: 0.8750, size: 17.5, sizesDeduction: 52.5 },
+        4: { stir: 36000, mass: 47000, repRate: 0.9375, size: 8.75, sizesDeduction: 61.25 },
+        5: { stir: 48000, mass: 59000, repRate: 1.0000, size: 4.375, sizesDeduction: 65.625 }
+      };
+      
+      let currentShape = "shape"; // Default shape
+      document.getElementById("shapeSetSelector").addEventListener("change", function(event) {    
+        const shapeDiv = document.getElementById("shape");
+
+        // Remove previous shape class
+        shapeDiv.classList.remove("heart", "star", "bear", "shrink");
+
+        // Add new shape class
+        currentShape = event.target.value
+        shapeDiv.classList.add(currentShape);
+      });
+
+      function shrinkShape() {
+        const shapeDiv = document.getElementById("shape");
+        // Remove and re-add the class to restart the animation
+        shapeDiv.classList.remove("shrink");
+        void shapeDiv.offsetHeight; // Force reflow to restart animation
+        shapeDiv.classList.add("shrink");
+      }
       
       function mix() {
         if (acidMass == 0) {
@@ -741,8 +811,14 @@
           // subsequent iterations
           for (let ss = 1; ss < 6; ss++) {
             setTimeout(() => {
-              stirFlask();
               bubbleSize -= 1;
+              document.getElementById("shape").style.height = Decays[ss]["size"] + 'px';
+              if (ss > 1) {
+              	currentSize = 358 - Decays[ss]["sizesDeduction"];
+              	document.getElementById("shape").style.bottom = currentSize + 'px';
+              }
+              stirFlask();
+              shrinkShape();
             }, Decays[ss]["stir"]); // Each cycle happens every 20 seconds
           }
 
