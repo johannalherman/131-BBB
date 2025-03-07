@@ -408,10 +408,11 @@
         pileWidth = 0
         updateMassDisplay_1()
         
-        totalMass2 = beakerMass
         tareOffset2 = 0
+        totalMass2 = beakerMass
         waterMass = 0
         liquidHeight1 = 0
+        document.getElementById('liquid').style.height = liquidHeight1 + 'px'
         updateMassDisplay2()
         
         mixVolume = 0
@@ -419,8 +420,7 @@
         updateMassDisplay3()
         massCarb = 0
         gCO2 = 0
-        animationEnabled = false
-        
+        animationEnabled = false        
         document.getElementById("mixture").style.height = 0 + "px"
       }
       
