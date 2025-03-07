@@ -188,55 +188,7 @@
         font-size: 24px;
         font-weight: bold;
         z-index: 10;
-      }      
-
-      #glassware-container-2 {  
-        width: 400px;
-        margin: auto; 
-        position: relative;
-      }
-
-      #total-mass-2 {
-        position: absolute;
-        bottom: 2.5%; /* Adjust as needed */
-        left: 50%; /* Adjust as needed */
-        transform: translateX(-50%);
-        border-radius: 5px;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 10;
-      }
-
-      #cylinder {
-        display: absolute;
-        width: 400px;
-        z-index: 0;
-      }
-
-      #solution {
-        position: absolute;
-        bottom: 23.9%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 13%;
-        height: 0;
-        background: #abdcf2;
-        transition: height 0.3s ease-in-out;
-        opacity: 0.75;
-        z-index: -10;
-      }
-      .solution::after {
-        content: "";
-        position: absolute;
-        top: 0px;
-        right: 50%;
-        transform: translateX(50%);
-        width: 100%;
-        height: 5px;
-        background: #def1fa; /* Subtle meniscus highlight */
-        border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
-        z-index: 0;
-      }
+      } 
 
       .tilt {
         animation: tiltAnimation 1s 10 alternate ease-in-out;
@@ -297,6 +249,40 @@
         z-index: 10;
       }
       
+
+      #glassware-container-2 {
+        position: relative;
+        display: inline-block;
+      }
+      #total-mass-2 {
+        position: absolute;
+        bottom: 2.5%; /* Adjust as needed */
+        left: 50%; /* Adjust as needed */
+        transform: translateX(-50%);
+        border-radius: 5px;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 0;
+      }    
+      #beaker {
+        display: absolute;
+        width: 400px;
+        z-index: 5;
+      }
+      #liquid {
+        position: absolute;
+        bottom: 112px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        height: 0;
+        background: #abdcf2;
+        transition: height 0.3s;
+        opacity: 0.75;
+        border-radius: 5px;
+        z-index: -10;
+      }
+
     </style>
   </head>
   <body> 
@@ -330,7 +316,7 @@
     </div>
 
     <!-- Tab content -->
-    <div id="Materials" class="tabcontent">
+    <div id="Materials1" class="tabcontent">
 
       <div class="row" >
         <div class="column">
@@ -365,7 +351,7 @@
             <button id="addLargecornstarchBtn" type="button" disabled>Add Large Amount</button>
           </div>
           <div class="tab" style="margin: 100px 10px 40px 10px;">
-            <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>6)</strong> Mold Bath Bomb into Shape!</button>
+            <button class="tablinks" onclick="{openTabs(event, 'Materials2')}"><strong>6)</strong> Mold Bath Bomb into Shape!</button>
           </div>
         </div>
         
@@ -373,8 +359,30 @@
 
     </div>
 
+    <div id="Materials2" class="tabcontent">
+      <!--Balance Area #2 Code-->
+      <div class="button-container" style="margin-bottom: 0px;">
+        <button onclick="addWater()">Add D.I. Water</button>
+      </div>
+      <div id="glassware-container-2">
+        <div id="liquid"></div>
+        <img id="beaker" src="https://github.com/johannalherman/131-BBB/blob/main/Beaker%20on%20Balance.png?raw=true" alt="50-mL Beaker">
+        <p id="total-mass-2"><span>0.000</span> g</p>
+      </div>
+      <div class="button-container" style="margin-bottom: 40px;">
+        <button id="tareButton-2" class="control-button">Tare Balance</button>
+        <button id="clearButton-2" class="control-button">Empty Beaker</button>
+      </div>
+
+      <div class="tab" style="margin: 50px 10px 40px 10px;">
+        <button class="tablinks" onclick="{openTabs(event, 'Reaction');mix()}"><strong>7)</strong> Add dried bath bomb into water!</button>
+      </div>
+    </div>
+
+
+
     <div id="Reaction" class="tabcontent">
-      <!--Balance Area #1 Code--> 
+      <!--Balance Area #3 Code--> 
 
       <div id="glassware-container-3">
         <div id="mixture" class="mixture"></div>
@@ -385,7 +393,7 @@
 
       <div class="tab" style="margin: -130px 10px 40px 10px;">
       <p>...wait for reaction to complete.</p>
-        <button class="tablinks" onclick="{openTabs(event, 'Materials'); resetButton()}" id="defaultOpen"><strong>6)</strong> Return to Start New Trial!</button>
+        <button class="tablinks" onclick="{openTabs(event, 'Materials1'); resetButton()}" id="defaultOpen"><strong>8)</strong> Return to Start New Trial!</button>
       </div>
 
     </div>
@@ -397,10 +405,10 @@
       function getRandomAmount(min, max) {
         return Math.random() * (max - min) + min;
       }
+      let amount = 0
       
     	let currentAcid = ""
       let densityCarb = 1.045
-      let amount = 0
       
     	let acidMass = 0      
       let bicarbMass = 0
@@ -432,6 +440,12 @@
         pileHeight = 0
         pileWidth = 0
         updateMassDisplay_1()
+        
+        totalMass2 = beakerMass
+        tareOffset2 = 0
+        waterMass = 0
+        liquidHeight1 = 0
+        updateMassDisplay2()
         
         mixVolume = 0
         totalMass3 = 0        
@@ -555,13 +569,11 @@
       
       function updateMassDisplay_1() {
       	document.getElementById("total-mass-1").textContent = `${(totalMass_1 - tareOffset1).toFixed(3)} g`;
-      }    
-      
+      }        
       document.getElementById("tareButton-1").addEventListener("click", () => {
         tareOffset1 = totalMass_1;
         updateMassDisplay_1();
-      });   
-      
+      });        
       document.getElementById("clearButton").addEventListener("click", () => {
         tareOffset1 = 0;
         totalMass_1 = flask1Mass;
@@ -619,6 +631,46 @@
       addLargecornstarchBtn.addEventListener("click", () => addParticles("large","cornstarch"));
       loop();
       
+      
+      
+      let waterMass = 0
+      let liquidHeight1 = 0
+      let beakerMass = getRandomAmount(35, 40)
+      let totalMass2 = beakerMass
+      let tareOffset2 = 0
+      let lim1 = 180;
+    
+      const addWaterButton = document.querySelector('button[onclick="addWater()"]');        
+      document.getElementById("tareButton-2").addEventListener("click", () => {
+        tareOffset2 = totalMass2;
+        updateMassDisplay2();
+      });         
+      document.getElementById("clearButton-2").addEventListener("click", () => {
+        tareOffset2 = 0
+        totalMass2 = beakerMass
+        waterMass = 0
+        liquidHeight1 = 0
+        document.getElementById('liquid').style.height = liquidHeight1 + 'px'
+        updateMassDisplay2()
+      });
+
+      function increaseLiquidLevel1(px_increase) {
+        liquidHeight1 += px_increase * 2;
+        document.getElementById('liquid').style.height = liquidHeight1 + 'px';
+      }
+      function updateMassDisplay2() {
+        document.querySelector('#total-mass-2 span').textContent =  `${(totalMass2 - tareOffset2).toFixed(3)}`;
+      }
+      function addWater() {
+        amount = getRandomAmount(5, 15);
+        if (waterMass > 50) amount = 0; // Prevent liquid from going above limit
+
+        totalMass2 += amount;
+        waterMass += amount;
+        updateMassDisplay2();
+        increaseLiquidLevel1(amount);
+      }
+      
           
               
 			
@@ -668,7 +720,7 @@
       // Calculate reaction results
       function ResultsAcid() {
       	mmoleH = ((acidMass / (MolarMasses[currentAcid].MW)) * 1000) * (MolarMasses[currentAcid].rxnRatio);
-        mmoleCarb = 0;
+        mmoleCarb = ((bicarbMass / 105.9888 ) * 1000);
         mmoleCO2 = Math.min(mmoleH,mmoleCarb);
         gCO2 = (mmoleCO2 * 44.01) / 1000;
       }
@@ -705,7 +757,7 @@
         } else {
           ResultsAcid();
           openTabs(event, 'Reaction');
-          mixVolume = ((acidMass + bicarbMass + cornstarchMass) * 40) + 40 + 30;
+          mixVolume = ((acidMass + bicarbMass + cornstarchMass) * 40) + waterMass + 30;
           increaseLiquidLevel3();
           animationEnabled = true; bubbleSize = 6;
 
@@ -720,7 +772,7 @@
           // subsequent iterations
           for (let mm = 1; mm < 6; mm++) {
             setTimeout(() => {
-              totalMass3 = acidMass + flask1Mass - (Decays[mm]["repRate"] * gCO2);
+              totalMass3 = acidMass + bicarbMass + cornstarchMass + flask1Mass - (Decays[mm]["repRate"] * gCO2);
               updateMassDisplay3(); // Wait **10 seconds** after stirring before updating mass
             }, Decays[mm]["mass"]); // 10s delay for updateMassDisplay3()
           }
